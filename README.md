@@ -1,64 +1,75 @@
-# PassMan Releases
+# PassMan Enterprise Vault Console
 
-Public release artifacts, signed update manifests, and customer-facing download metadata for PassMan Enterprise Vault Console.
+PassMan is a self-hosted, zero-knowledge enterprise password and secrets vault for Windows Server environments. It is installed with an MSI, runs on the customer's own Windows server, and is accessed from browsers through the server IP or DNS name.
 
-This repository intentionally contains distribution assets only. The PassMan product source code, build system, signing workflow, and internal development history remain in the private `ucsahinn/passman` repository.
+This public repository contains product documentation, knowledge-base articles, release notes, and GitHub Release downloads. The product source code and signing workflow remain private.
 
-## Current Release
+## Current Stable Release
 
-Latest stable release: **PassMan 1.5.1**
+**PassMan 1.5.3**
 
-- Release page: https://github.com/ucsahinn/passman-releases/releases/tag/v1.5.1
-- Latest release redirect: https://github.com/ucsahinn/passman-releases/releases/latest
+- Latest release: https://github.com/ucsahinn/passman-releases/releases/latest
+- MSI: https://github.com/ucsahinn/passman-releases/releases/latest/download/PassMan-1.5.3-x64.msi
 - Signed update manifest: https://github.com/ucsahinn/passman-releases/releases/latest/download/passman-update.json
-
-PassMan verifies the signed update manifest, pinned SHA-256 checksums, and package metadata before exposing update packages in the application.
+- Browser extension ZIP: https://github.com/ucsahinn/passman-releases/releases/latest/download/passman-chromium-extension.zip
+- Offline share decrypter ZIP: https://github.com/ucsahinn/passman-releases/releases/latest/download/passman-share-decrypter.zip
+- PassMan DC Agent script: https://github.com/ucsahinn/passman-releases/releases/latest/download/passman-ad-agent.ps1
 
 ## Component Versions
 
-| Component | Version | Distribution |
+| Component | Version | How it is delivered |
 | --- | ---: | --- |
-| PassMan Enterprise Vault Console | 1.5.1 | Windows MSI |
-| Chromium browser extension | 3.1.8 | ZIP package and extension metadata |
-| Offline Share Decrypter | 1.2.0 | ZIP package and metadata |
-| PassMan DC Agent Service | 1.0.10 | PowerShell service installer and metadata |
+| PassMan Enterprise Vault Console | 1.5.3 | Windows MSI |
+| Chromium browser extension | 3.1.8 | ZIP fallback package and managed extension rollout support |
+| Offline Share Decrypter | 1.2.0 | ZIP package included in release assets |
+| PassMan DC Agent Service | 1.0.10 | PowerShell service installer script included in release assets |
 
-The Update Center exposes the main MSI and browser extension as actionable update cards. The Offline Share Decrypter and PassMan DC Agent Service are MSI-refreshed support components and remain visible in release notes and package metadata.
+The Update Center exposes the main MSI and browser extension as actionable update surfaces. The Offline Share Decrypter and PassMan DC Agent Service are support components refreshed by the MSI and documented in release notes.
 
-## Release Assets
+## What PassMan Provides
 
-| Asset | Purpose |
+- Self-hosted Windows Server runtime with no cloud database dependency.
+- Browser-side encryption before secrets are stored.
+- RAM-only unlock model for master-derived key material.
+- Passwords, API keys, credentials, secure notes, certificates, and file-backed secrets.
+- Internal and external selected-record sharing.
+- Offline external-share decryption with expiry and usage limits.
+- Chromium extension pairing, autofill, save/update prompts, and active-site badge counts.
+- Active Directory integration through PassMan DC Agent Service.
+- Audit chain visibility, user/RBAC management, offline licensing, backups, update verification, and server diagnostics.
+
+## Documentation
+
+| Language | Start here |
 | --- | --- |
-| `PassMan-1.5.1-x64.msi` | Self-hosted PassMan server installer for Windows. |
-| `passman-update.json` | Signed update manifest for the main application and support components. |
-| `passman-chromium-extension.zip` | Chromium extension fallback or managed rollout package. |
-| `passman-extension-update.json` | Browser extension package metadata. |
-| `passman-share-decrypter.zip` | Offline external-share decrypter package. |
-| `passman-share-decrypter.json` | Offline decrypter package metadata. |
-| `passman-ad-agent.ps1` | PassMan DC Agent Service installer/repair/status script. |
-| `passman-ad-agent.json` | DC Agent package metadata. |
+| Turkish | [docs/tr/overview.md](docs/tr/overview.md) |
+| English | [docs/en/overview.md](docs/en/overview.md) |
 
-## DC Agent Service
+Common guides:
 
-The current DC Agent Service release is `1.0.10`.
+- [TR: Windows Server kurulumu](docs/tr/install-windows-server.md)
+- [TR: Public host, HTTPS ve sertifika](docs/tr/public-host-https-certificate.md)
+- [TR: Active Directory ajanı](docs/tr/active-directory-agent.md)
+- [TR: Paylaşım ve offline decrypter](docs/tr/sharing-and-offline-decrypter.md)
+- [EN: Windows Server installation](docs/en/install-windows-server.md)
+- [EN: Public host, HTTPS and certificates](docs/en/public-host-https-certificate.md)
+- [EN: Active Directory agent](docs/en/active-directory-agent.md)
+- [EN: Sharing and offline decrypter](docs/en/sharing-and-offline-decrypter.md)
 
-The agent script installs the Windows service as `PassManDCAgent` with display name `PassMan DC Agent Service`. It supports:
+Full release history is in [RELEASES.md](RELEASES.md).
 
-- `-InstallService` for first service installation.
-- `-RepairService` to rebuild and restart the service using the existing protected local config.
-- `-Status` to print redacted service, config, and log status.
-- `-TailLog` to watch agent logs from a terminal while the service keeps running.
+## Update Verification
 
-The AD bind password is collected locally on the DC-side machine. It is not sent to PassMan and is not written to release metadata.
+PassMan-managed updates verify the signed update manifest, pinned SHA-256 checksums, file metadata, and MSI signer thumbprint before exposing update packages in the application.
 
-## Release Notes
-
-See [RELEASES.md](./RELEASES.md) for the current release summary and component history.
+PassMan does not require a global CA chain for its own update trust when the signed manifest pins the local release signer. A CA-backed or trusted-signing certificate is still recommended for Windows SmartScreen reputation and broad OS-level trust.
 
 ## Licensing
 
-These release artifacts are distributed for licensed PassMan users. This repository is not an open source source-code repository.
+PassMan is distributed for licensed users. This repository is not an open-source source-code repository.
 
 ## Security
 
-Do not upload private keys, signing certificates, database files, environment files, AD bind credentials, agent tokens, or customer data to this repository. Installers and package archives belong in GitHub Releases, not in the source tree.
+Do not upload private keys, signing certificates, database files, environment files, AD bind credentials, agent tokens, license issuer material, customer data, logs, or screenshots containing secrets to this repository.
+
+Installers, ZIP packages, PowerShell scripts, and signed manifests belong in GitHub Releases, not in the git tree.

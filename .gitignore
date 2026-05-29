@@ -1,0 +1,25 @@
+# Local scratch and generated files
+.DS_Store
+Thumbs.db
+desktop.ini
+*.log
+*.tmp
+tmp/
+temp/
+.serena/
+.codex/
+
+# Release assets belong in GitHub Releases, not in git
+*.msi
+*.zip
+*.exe
+*.pfx
+*.p12
+*.pem
+*.key
+*.db
+*.sqlite
+passman-update.json
+passman-ad-agent.ps1
+passman-chromium-extension.zip
+passman-share-decrypter.zip
